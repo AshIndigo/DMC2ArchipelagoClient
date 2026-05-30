@@ -48,13 +48,13 @@ pub extern "system" fn DllMain(
 
     match fdw_reason {
         DLL_PROCESS_ATTACH => {
-            randomizer_utilities::setup_logger("dmc3_randomizer");
+            randomizer_utilities::setup_logger("dmc2_randomizer");
             panic::set_hook(Box::new(|info| {
                 log::error!("Panic occurred: {info}");
             }));
             randomizer_utilities::ui::dx11_hooks::OVERLAY_HANDLER
                 .set(OverlayHandler {
-                    create_device_addr: *DMC2_ADDRESS + 0x34F650,
+                    create_device_addr: *DMC2_ADDRESS + 0x1657DC0,
                     present_fn: ui::overlay::present_hook,
                 })
                 .unwrap();
@@ -94,7 +94,7 @@ fn setup_main_loop_hook() -> Result<(), MH_STATUS> {
 pub static AP_CORE: OnceLock<Arc<Mutex<ArchipelagoCore>>> = OnceLock::new();
 
 static MAIN_LOOP_ORIGINAL: OnceLock<BasicNothingFunc> = OnceLock::new();
-const MAIN_LOOP_ADDR: usize = 0x337df0;
+const MAIN_LOOP_ADDR: usize = 0x249e70; // Could maybe do a better job?
 fn main_loop_hook() {
     // Run original game code
     if let Some(func) = MAIN_LOOP_ORIGINAL.get() {
