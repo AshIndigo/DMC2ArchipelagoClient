@@ -93,10 +93,10 @@ fn draw_overlay(screen_width: f32, screen_height: f32, state: &RwLockReadGuard<D
             NO_PURCHASE,
             480.0
                 + (NO_PURCHASE
-                .chars()
-                .map(|c| atlas.glyph_advance(c))
-                .sum::<f32>()
-                / 2.0),
+                    .chars()
+                    .map(|c| atlas.glyph_advance(c))
+                    .sum::<f32>()
+                    / 2.0),
             70.0,
             screen_width,
             screen_height,
@@ -107,10 +107,10 @@ fn draw_overlay(screen_width: f32, screen_height: f32, state: &RwLockReadGuard<D
             NO_PURCHASE_L2,
             480.0
                 + (NO_PURCHASE
-                .chars()
-                .map(|c| atlas.glyph_advance(c))
-                .sum::<f32>()
-                / 2.0),
+                    .chars()
+                    .map(|c| atlas.glyph_advance(c))
+                    .sum::<f32>()
+                    / 2.0),
             106.0,
             screen_width,
             screen_height,

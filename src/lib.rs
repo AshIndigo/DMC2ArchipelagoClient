@@ -1,13 +1,17 @@
-pub mod utilities;
-pub mod constants;
-pub mod config;
 pub mod archipelago;
-pub mod mapping;
+pub mod check_handler;
+mod compat;
+pub mod config;
+pub mod constants;
 pub mod game_manager;
 pub mod hook;
-pub mod check_handler;
+pub mod mapping;
 mod ui;
+pub mod utilities;
 
+use crate::archipelago::ArchipelagoCore;
+use crate::compat::ddmk_hook::setup_ddmk_hook;
+use crate::utilities::{DMC2_ADDRESS, is_ddmk_loaded};
 use archipelago_rs::{Connection, ConnectionOptions, ItemHandling};
 use minhook::{MH_STATUS, MinHook};
 use randomizer_utilities::dmc::dmc_helpers::OverlayHandler;
@@ -16,8 +20,6 @@ use std::sync::{Arc, Mutex, OnceLock};
 use std::{panic, thread};
 use windows::Win32::Foundation::*;
 use windows::core::BOOL;
-use crate::archipelago::ArchipelagoCore;
-use crate::utilities::{is_ddmk_loaded, DMC2_ADDRESS};
 
 #[macro_export]
 /// Does not enable the hook, that needs to be done separately
@@ -105,15 +107,15 @@ fn main_loop_hook() {
 
     if !config::CONFIG.connections.disable_auto_connect
         && let Ok(mut core) = AP_CORE
-        .get_or_init(|| {
-            ArchipelagoCore::new(
-                config::CONFIG.connections.get_url(),
-                constants::GAME_NAME.parse().unwrap(),
-            )
+            .get_or_init(|| {
+                ArchipelagoCore::new(
+                    config::CONFIG.connections.get_url(),
+                    constants::GAME_NAME.parse().unwrap(),
+                )
                 .map(|core| Arc::new(Mutex::new(core)))
                 .unwrap()
-        })
-        .lock()
+            })
+            .lock()
         && let Err(err) = core.update()
     {
         log::error!("{}", err);
@@ -134,6 +136,7 @@ fn main_setup() {
     exception_handler::install_exception_handler("dmc2_randomizer_latest.log");
     if is_ddmk_loaded() {
         log::info!("DDMK is loaded!");
+        setup_ddmk_hook();
     } else {
         log::info!("DDMK is not loaded!");
     }

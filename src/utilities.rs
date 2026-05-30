@@ -1,5 +1,5 @@
-use std::sync::LazyLock;
 use randomizer_utilities::get_base_address;
+use std::sync::LazyLock;
 
 pub static DMC2_ADDRESS: LazyLock<usize> = LazyLock::new(|| get_base_address("dmc2.exe"));
 

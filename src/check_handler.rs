@@ -1,7 +1,7 @@
-use std::fmt::{Display, Formatter};
-use std::sync::mpsc::Sender;
-use std::sync::OnceLock;
 use crate::constants::Coordinates;
+use std::fmt::{Display, Formatter};
+use std::sync::OnceLock;
+use std::sync::mpsc::Sender;
 
 pub(crate) static TX_LOCATION: OnceLock<Sender<Location>> = OnceLock::new();
 

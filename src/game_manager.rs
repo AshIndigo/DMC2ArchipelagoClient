@@ -1,6 +1,6 @@
+use crate::mapping::MAPPING;
 use std::collections::HashSet;
 use std::sync::{LazyLock, RwLock};
-use crate::mapping::MAPPING;
 
 #[derive(Debug, Default)]
 pub(crate) struct ArchipelagoData {

@@ -1,7 +1,7 @@
-use std::sync::{LazyLock, RwLock};
+use randomizer_utilities::APVersion;
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
-use randomizer_utilities::APVersion;
+use std::sync::{LazyLock, RwLock};
 
 pub static MAPPING: LazyLock<RwLock<Option<Mapping>>> = LazyLock::new(|| RwLock::new(None));
 
@@ -43,7 +43,6 @@ pub enum DeathlinkSetting {
     HurtLink,  // Sends out DeathLink messages when you die. But only hurts you if you receive one
     Off,       // Don't send/receive DL related messages
 }
-
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Mapping {

@@ -1,19 +1,21 @@
-use std::collections::VecDeque;
-use std::error::Error;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::mpsc::{Receiver, Sender, TryRecvError};
-use std::sync::OnceLock;
-use std::time::Duration;
-use archipelago_rs::{Client, Connection, ConnectionOptions, ConnectionState, DeathLinkOptions, Event, ItemHandling};
-use randomizer_utilities::archipelago_utilities::{handle_print, DeathLinkData};
-use randomizer_utilities::{item_sync, setup_channel_pair};
+use crate::check_handler::{Location, TX_LOCATION};
+use crate::game_manager::{ARCHIPELAGO_DATA, ArchipelagoData};
+use crate::mapping::{DeathlinkSetting, MAPPING, Mapping, OVERLAY_INFO, OverlayInfo};
+use crate::{game_manager, hook};
+use archipelago_rs::{
+    Client, Connection, ConnectionOptions, ConnectionState, DeathLinkOptions, Event, ItemHandling,
+};
+use randomizer_utilities::archipelago_utilities::{DeathLinkData, handle_print};
 use randomizer_utilities::ui::font_handler::WHITE;
 use randomizer_utilities::ui::overlay_messages;
 use randomizer_utilities::ui::overlay_messages::{MessageSegment, MessageType, OverlayMessage};
-use crate::{game_manager, hook};
-use crate::check_handler::{Location, TX_LOCATION};
-use crate::game_manager::{ArchipelagoData, ARCHIPELAGO_DATA};
-use crate::mapping::{DeathlinkSetting, Mapping, OverlayInfo, MAPPING, OVERLAY_INFO};
+use randomizer_utilities::{item_sync, setup_channel_pair};
+use std::collections::VecDeque;
+use std::error::Error;
+use std::sync::OnceLock;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::mpsc::{Receiver, Sender, TryRecvError};
+use std::time::Duration;
 
 pub(crate) static CONNECTED: AtomicBool = AtomicBool::new(false);
 pub static TX_DEATHLINK: OnceLock<Sender<DeathLinkData>> = OnceLock::new();
@@ -207,11 +209,14 @@ impl ArchipelagoCore {
     }
 }
 
-fn handle_received_items_packet(index: usize, client: &mut Client<Mapping>) -> Result<(), Box<dyn Error>> {
+fn handle_received_items_packet(
+    index: usize,
+    client: &mut Client<Mapping>,
+) -> Result<(), Box<dyn Error>> {
     todo!()
 }
 
-fn handle_item_receive(client: &mut Client<Mapping>, idx: Location) -> Result<(), Box<dyn Error>>  {
+fn handle_item_receive(client: &mut Client<Mapping>, idx: Location) -> Result<(), Box<dyn Error>> {
     todo!()
 }
 
@@ -232,7 +237,7 @@ fn disconnect(hooks_enabled: &mut bool) {
             }
         }
     }
-    
+
     MAPPING.write().unwrap().take(); // Clear mappings
     *ARCHIPELAGO_DATA.write().unwrap() = ArchipelagoData::default(); // Reset Data (Probably not needed)
     log::info!("Game restored to default state");
