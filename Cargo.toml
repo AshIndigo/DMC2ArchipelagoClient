@@ -1,0 +1,30 @@
+[package]
+name = "DMC2ArchipelagoClient"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "dmc2_randomizer"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+serde_json = "1.0.150"
+serde = { version = "1.0.228", features = ["derive"] }
+
+[dependencies]
+archipelago_rs = { path = "../archipelago_rs" }
+bimap = {workspace = true}
+windows = { workspace = true }
+randomizer_utilities = { path = "../randomizer_utilities", features = ["dmc"] }
+log = { workspace = true }
+anyhow = { workspace = true }
+serde_json = "1.0.150"
+serde = { version = "1.0.228", features = ["derive"] }
+#imgui = { version = "0.12.0" }
+imgui-sys = { version = "0.12.0" }
+minhook = "0.9.0"
+strum_macros = "0.28.0"
+bitflags = "2.11.1"
+oneshot = "0.2.1"
+rand = "0.10.1"
+strum = "0.28.0"
